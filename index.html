@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journey to the Ancient World</title>
+  <link rel="stylesheet" href="stylemain.css">
+</head>
+<body>
+  <div class="container">
+    <h1 class="form-title">Embark on a Journey to the Ancient World</h1>
+    <form id="student-form">
+      <label for="studentName">Student Name</label>
+      <input type="text" id="studentName" name="studentName" placeholder="Enter your name" required>
+      
+      <label for="collegeName">College Name</label>
+      <input type="text" id="collegeName" name="collegeName" placeholder="Enter your college name" required>
+      
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required>
+      
+      <label for="phoneNumber">Phone Number</label>
+      <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" required>
+      
+      <label for="address">Address</label>
+      <textarea id="address" name="address" placeholder="Enter your address" required></textarea>
+      
+      <label for="additionalInfo">Additional Information</label>
+      <textarea id="additionalInfo" name="additionalInfo" placeholder="Tell us something about you..."></textarea>
+      
+      <button type="button" id="submitBtn">Submit</button>
+    </form>
+    <script>
+      document.getElementById('submitBtn').addEventListener('click', async () => {
+          const studentData = {
+              studentName: document.getElementById('studentName').value,
+              collegeName: document.getElementById('collegeName').value,
+              email: document.getElementById('email').value,
+              phoneNumber: document.getElementById('phoneNumber').value,
+              address: document.getElementById('address').value,
+              additionalInfo: document.getElementById('additionalInfo').value,
+          };
+    
+          try {
+              const response = await fetch('http://localhost:5000/submit', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(studentData),
+              });
+    
+              if (response.ok) {
+                  alert('Data submitted successfully!');
+                  window.location.href = 'search.html';
+              } else {
+                  alert('Failed to submit data!');
+              }
+          } catch (error) {
+              alert('Error: ' + error.message);
+          }
+      });
+    </script>
+  </div>
+</body>
+</html>

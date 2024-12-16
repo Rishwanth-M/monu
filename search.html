@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Monuments</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1 class="page-title">Explore Ancient Monuments</h1>
+    <div class="search-bar">
+      <label for="searchType">Search by:</label>
+      <select id="searchType">
+        <option value="name">Name</option>
+        <option value="state">State</option>
+        <option value="city">City</option>
+      </select>
+      <input type="text" id="searchQuery" placeholder="Enter your search query">
+      <button id="searchBtn">Search</button>
+    </div>
+    <div id="results" class="results-section"></div>
+  </div>
+  
+  <script>
+    document.getElementById('searchBtn').addEventListener('click', async () => {
+        const searchType = document.getElementById('searchType').value;
+        const query = document.getElementById('searchQuery').value;
+    
+        try {
+            const response = await fetch(`http://localhost:5000/search?searchType=${searchType}&query=${query}`);
+            const results = await response.json();
+    
+            let resultHTML = '';
+            results.forEach(result => {
+                resultHTML += `
+                  <div class="monument-details">
+                    <h2>${result.Name}</h2>
+                    <p><strong>Zone:</strong> ${result.Zone}</p>
+                    <p><strong>State:</strong> ${result.State}</p>
+                    <p><strong>City:</strong> ${result.City}</p>
+                    <p><strong>Type:</strong> ${result.Type}</p>
+                    <p><strong>Establishment Year:</strong> ${result.EstablishmentYear || 'Unknown'}</p>
+                    <p><strong>Time Needed to Visit (in hrs):</strong> ${result.timeNeededToVisitInHrs || 'Unknown'}</p>
+                    <p><strong>Google Review Rating:</strong> ${result.GoogleReviewRating || 'Unknown'}</p>
+                    <p><strong>Entrance Fee (INR):</strong> ${result.EntranceFeeInINR || 'Unknown'}</p>
+                    <p><strong>Airport within 50km Radius:</strong> ${result.AirportWith50kmRadius || 'Unknown'}</p>
+                    <p><strong>Weekly Off:</strong> ${result.WeeklyOff || 'Unknown'}</p>
+                    <p><strong>Significance:</strong> ${result.Significance}</p>
+                    <p><strong>DSLR Allowed:</strong> ${result.DSLRAllowed || 'Unknown'}</p>
+                    <p><strong>Number of Google Reviews (in lakhs):</strong> ${result.NumberOfGoogleReviewInLakhs || 'Unknown'}</p>
+                    <p><strong>Best Time to Visit:</strong> ${result.BestTimeToVisit || 'Unknown'}</p>
+                  </div>
+                `;
+            });
+    
+            document.getElementById('results').innerHTML = resultHTML;
+        } catch (error) {
+            alert('Error: ' + error.message);
+        }
+    });
+  </script>
+</body>
+</html>
